@@ -1,0 +1,94 @@
+<p>Fields with stars("*") are required</p>
+<div class="body">
+  <form (ngSubmit)="updateProject()" [formGroup]="updateForm" class="m-4" form>
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width">
+          <mat-label>Name</mat-label>
+          <input formControlName="name" matInput required>
+        </mat-form-field>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width">
+          <mat-label>Number</mat-label>
+          <input formControlName="number" matInput required>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width">
+          <mat-label>Order number</mat-label>
+          <input formControlName="order_number" matInput>
+        </mat-form-field>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width mb-3">
+          <mat-label>Priority</mat-label>
+          <mat-select formControlName="priority" required size="3">
+            <mat-option *ngFor="let value of priority" [value]="value">
+              {{ value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width mb-3">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status" required size="4">
+            <mat-option *ngFor="let value of status" [value]="value">
+              {{ value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width mb-3">
+          <mat-label>Client</mat-label>
+          <mat-select formControlName="client" required size="6">
+            <mat-option *ngFor="let client of clients" value="{{client.id}}">
+              {{ client.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width mb-3">
+          <mat-label>Project start date</mat-label>
+          <input [matDatepicker]="pickerStart" datePickerFormat="YYYY-MM-DD" formControlName="start" matInput required>
+          <mat-datepicker-toggle [for]="pickerStart" matSuffix></mat-datepicker-toggle>
+          <mat-datepicker #pickerStart></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width mb-3">
+          <mat-label>Deadline</mat-label>
+          <input [matDatepicker]="pickerEnd" datePickerFormat="YYYY-MM-DD" formControlName="deadline" matInput required>
+          <mat-datepicker-toggle [for]="pickerEnd" matSuffix></mat-datepicker-toggle>
+          <mat-datepicker #pickerEnd></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width mb-3">
+          <mat-label>Manager</mat-label>
+          <mat-select formControlName="manager" required size="6">
+            <mat-option *ngFor="let admin of adminList" value="{{admin.id}}">
+              {{ admin.first_name }} {{ admin.last_name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+        <button [disabled]="!updateForm.valid" class="btn-space" color="primary" mat-raised-button>Update</button>
+      </div>
+    </div>
+  </form>
+</div>

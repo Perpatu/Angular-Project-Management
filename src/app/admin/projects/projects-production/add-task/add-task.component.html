@@ -1,0 +1,70 @@
+<p>Fields with stars("*") are required</p>
+<div class="body">
+  <form (ngSubmit)="addTask()" [formGroup]="taskAddForm" class="m-4" form>
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width mb-3">
+          <mat-label>Choose users</mat-label>
+          <mat-select formControlName="users" multiple required size="3">
+            <mat-option *ngFor="let user of users" value="{{user.id}}">
+              <span>
+                {{ user.first_name }} {{ user.last_name }} ({{ user.task }})
+              </span>
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="taskAddForm.get('users').hasError('required')">
+            users are required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width mb-3">
+          <mat-label>Planned start date</mat-label>
+          <input [ngxMatDatetimePicker]="pickerStart" datePickerFormat="YYYY-MM-DD" formControlName="planned_start_date"
+                 matInput placeholder="Choose a date">
+          <ngx-mat-datepicker-toggle [for]="pickerStart" matSuffix></ngx-mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #pickerStart [disableMinute]="false" [enableMeridian]="false" [hideTime]="false"
+                                   [showSeconds]="false" [showSpinners]="true" [stepHour]="1" [stepMinute]="1"
+                                   [stepSecond]="1" [touchUi]="false">
+            <ngx-mat-datepicker-actions>
+              <button mat-button ngxMatDatepickerCancel>Cancel</button>
+              <button color="primary" mat-raised-button ngxMatDatepickerApply>Apply</button>
+            </ngx-mat-datepicker-actions>
+          </ngx-mat-datetime-picker>
+          <mat-error *ngIf="taskAddForm.get('planned_start_date').hasError('required')">
+            Planned start date is required
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width mb-3">
+          <mat-label>Planned end date</mat-label>
+          <input [ngxMatDatetimePicker]="pickerEnd" datePickerFormat="YYYY-MM-DD" formControlName="planned_end_date"
+                 matInput placeholder="Choose a date">
+          <ngx-mat-datepicker-toggle [for]="pickerEnd" matSuffix></ngx-mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #pickerEnd [disableMinute]="false" [enableMeridian]="false" [hideTime]="false"
+                                   [showSeconds]="false" [showSpinners]="true" [stepHour]="1" [stepMinute]="1"
+                                   [stepSecond]="1" [touchUi]="false">
+            <ngx-mat-datepicker-actions>
+              <button mat-button ngxMatDatepickerCancel>Cancel</button>
+              <button color="primary" mat-raised-button ngxMatDatepickerApply>Apply</button>
+            </ngx-mat-datepicker-actions>
+          </ngx-mat-datetime-picker>
+          <mat-error *ngIf="taskAddForm.get('planned_end_date').hasError('required')">
+            Planned end date is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+        <button [disabled]="!taskAddForm.valid" class="btn-space" color="primary" mat-raised-button>Add
+          task
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,19 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="updateForm" class="m-4">
+  <mat-form-field appearance="fill" class="example-full-width">
+    <mat-label>Should the project be invoiced?</mat-label>
+    <mat-select formControlName="invoiced">
+      <mat-option [value]="'YES'">
+        YES
+      </mat-option>
+      <mat-option [value]="'YES (LACK OF INVOICE)'">
+        YES (LACK OF INVOICE)
+      </mat-option>
+      <mat-option [value]="'NO'">
+        NO
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="col-md-12">
+    <button class="btn-space" color="primary" mat-raised-button>Update</button>
+  </div>
+</form>

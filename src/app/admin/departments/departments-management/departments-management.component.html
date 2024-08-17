@@ -1,0 +1,104 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <!-- breadcrumb -->
+      <app-breadcrumb [active_item]="'Department management'" [items]="['Departments']"
+                      [title]="'Department management'"></app-breadcrumb>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <div class="body">
+            <div class="wrapper">
+              <nav class="nav-main">
+                <div class="d-flex float-end mb-3">
+                  <button (click)="openAddDepartment(addDepartment)" color="primary" mat-raised-button
+                          type="button">Add
+                    Department
+                  </button>
+                </div>
+              </nav>
+              <main class="main">
+                <div class="example-container mat-elevation-z8">
+                  <table [dataSource]="dataSource" mat-table>
+                    <ng-container matColumnDef="name">
+                      <th *matHeaderCellDef class="appearance" mat-header-cell>
+                        Name
+                      </th>
+                      <td *matCellDef="let element" data-label="Name" mat-cell>
+                        <a [queryParams]="{ dep_name:element.name, dep_id:element.id, status:'Active' }"
+                           [routerLink]="'/admin/department/department-detail'">
+                          {{ element.name }}
+                        </a>
+
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="order">
+                      <th *matHeaderCellDef class="appearance" mat-header-cell>
+                        Order
+                      </th>
+                      <td *matCellDef="let element" data-label="Order" mat-cell>
+                        {{ element.order }}
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="options">
+                      <th *matHeaderCellDef class="appearance" mat-header-cell>
+                        Options
+                      </th>
+                      <td *matCellDef="let element" data-label="Options" mat-cell>
+                        <mat-icon (click)="deleteDepartment(element.id, element.name)" [matTooltipPosition]="'above'"
+                                  class="icons"
+                                  matTooltip="Delete Department">delete_forever
+                        </mat-icon>
+
+                        <mat-icon (click)="editDepartment(userEdit, element)" [matTooltipPosition]="'above'"
+                                  class="icons" data-placement="top"
+                                  matTooltip="Edit Department">mode_edit
+                        </mat-icon>
+                      </td>
+                    </ng-container>
+
+                    <tr *matHeaderRowDef="columns; sticky: isWideScreen" mat-header-row></tr>
+                    <tr *matRowDef="let row; columns: columns;" mat-row></tr>
+                  </table>
+                </div>
+              </main>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+  <ng-template #addDepartment let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Add Department</h4>
+      <button (click)="modal.dismiss('Cross click')" aria-label="Close" class="close" type="button">
+        <span aria-hidden="true"><i class="material-icons">close</i></span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-department-add [modalRef]="modalRef"></app-department-add>
+    </div>
+  </ng-template>
+</div>
+
+
+<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+  <ng-template #userEdit let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Update Department</h4>
+      <button (click)="modal.dismiss('Cross click')" aria-label="Close" class="close" type="button">
+        <span aria-hidden="true"><i class="material-icons">close</i></span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-department-edit [department]="departmentData" [modalRef]="modalRef"></app-department-edit>
+    </div>
+  </ng-template>
+</div>

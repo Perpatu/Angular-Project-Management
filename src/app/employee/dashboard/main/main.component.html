@@ -1,0 +1,25 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb [active_item]="'Dashboard'" [items]="['Home']" [title]="'Dashboard'"></app-breadcrumb>
+    </div>
+    <div class="row">
+      <ng-container *ngFor="let dep of departments">
+        <div class="col-xl-3 col-lg-6">
+          <a [queryParams]="{ dep_name:dep.name, dep_id: dep.id, status:'Active'}"
+             [routerLink]="['/employee/department/department-detail/']">
+            <div class="card l-bg">
+              <div class="card-statistic-4">
+                <div class="card-icon card-icon-large"></div>
+                <div class="card-content">
+                  <h4 class="card-title">{{dep.name}}</h4>
+                  <span class="data-1">Active: {{dep.quantity}}</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</section>

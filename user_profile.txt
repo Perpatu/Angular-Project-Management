@@ -1,0 +1,300 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <!-- breadcrumb -->
+            <app-breadcrumb [active_item]="'Profile'" [items]="['Employees']" [title]="'Profile'">
+            </app-breadcrumb>
+        </div>
+        <!-- Your content goes here  -->
+        <div class="row clearfix">
+            <div class="col-lg-4 col-md-12">
+                <div class="card">
+                    <div class="m-b-20">
+                        <div class="contact-grid">
+                            <div class="profile-header bg-dark">
+                                <div class="user-name">{{userData.first_name}} {{userData.last_name}}</div>
+                                <div class="name-center">{{userData.role}}</div>
+                            </div>
+                            <img alt="" class="user-img" src="assets/images/user/usrbig3.jpg">
+                            <p>
+                                {{userData.address}}
+                            </p>
+                            <div>
+                  <span class="phone">
+                    <i class="material-icons">Phone number</i>{{userData.phone_number}}</span>
+                            </div>
+                            <!--<div class="row">
+                              <div class="col-4">
+                                <h5>564</h5>
+                                <small>Following</small>
+                              </div>
+                              <div class="col-4">
+                                <h5>18k</h5>
+                                <small>Followers</small>
+                              </div>
+                              <div class="col-4">
+                                <h5>565</h5>
+                                <small>Post</small>
+                              </div>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <mat-tab-group mat-align-tabs="start">
+                        <mat-tab label="About">
+                            <div class="p-4">
+                                <p class="text-default">{{userData.own_description}}</p>
+                                <small class="text-muted">Email: </small>
+                                <p>{{userData.email}}</p>
+                                <hr>
+                                <small class="text-muted">Phone number: </small>
+                                <p>{{userData.phone_number}}</p>
+                                <hr>
+                            </div>
+                        </mat-tab>
+                        <mat-tab label="Skills">
+                            <ul class="list-unstyled p-4">
+                                <li>
+                                    <div>OPD</div>
+                                    <div class="progress skill-progress m-b-20">
+                                        <div aria-valuemax="100" aria-valuemin="0"
+                                             aria-valuenow="45"
+                                             class="progress-bar l-bg-green width-per-45" role="progressbar"></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>Operations</div>
+                                    <div class="progress skill-progress m-b-20">
+                                        <div aria-valuemax="100" aria-valuemin="0"
+                                             aria-valuenow="38"
+                                             class="progress-bar l-bg-orange width-per-38" role="progressbar"></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>Client Visit</div>
+                                    <div class="progress skill-progress m-b-20">
+                                        <div aria-valuemax="100" aria-valuemin="0"
+                                             aria-valuenow="39"
+                                             class="progress-bar l-bg-cyan width-per-39" role="progressbar"></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>RND</div>
+                                    <div class="progress skill-progress m-b-20">
+                                        <div aria-valuemax="100" aria-valuemin="0"
+                                             aria-valuenow="70"
+                                             class="progress-bar l-bg-purple width-per-70" role="progressbar"></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-12">
+                <div class="card">
+                    <mat-tab-group>
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <mat-icon class="example-tab-icon msr-2">face</mat-icon>
+                                About Me
+                            </ng-template>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="project_widget">
+                                    <div class="header">
+                                        <h2><strong>About</strong></h2>
+                                    </div>
+                                    <div class="body">
+                                        <div class="row">
+                                            <div class="col-md-3 col-6 b-r">
+                                                <strong>Full Name</strong>
+                                                <br>
+                                                <p class="text-muted">{{userData.first_name}} {{userData.last_name}}</p>
+                                            </div>
+                                            <div class="col-md-3 col-6 b-r">
+                                                <strong>Phone number</strong>
+                                                <br>
+                                                <p class="text-muted">{{userData.phone_number}}</p>
+                                            </div>
+                                            <div class="col-md-3 col-6 b-r">
+                                                <strong>Email</strong>
+                                                <br>
+                                                <p class="text-muted">{{userData.email}}</p>
+                                            </div>
+                                            <div class="col-md-3 col-6">
+                                                <strong>Address</strong>
+                                                <br>
+                                                <p class="text-muted">{{userData.address}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="project_widget">
+                                    <div class="header">
+                                        <h2><strong>Description</strong></h2>
+                                    </div>
+                                    <div class="body">
+                                        <p class="m-t-30">
+                                            {{userData.boss_description}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="project_widget">
+                                    <div class="header">
+                                        <h2><strong>Education</strong></h2>
+                                    </div>
+                                    <div class="body">
+                                        <p class="m-t-30">
+                                            {{userData.education}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="project_widget">
+                                    <div class="header">
+                                        <h2><strong>Experience</strong></h2>
+                                    </div>
+                                    <div class="body">
+                                        <p class="m-t-30">
+                                            {{userData.experience}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab>
+                            <form (ngSubmit)="onSubmit()" [formGroup]="userUpdateForm" class="m-4">
+                                <ng-template mat-tab-label>
+                                    <mat-icon class="example-tab-icon msr-2">settings</mat-icon>
+                                    Settings
+                                </ng-template>
+                                <div class="header">
+                                    <h2>
+                                        <strong>Settings</strong>
+                                    </h2>
+                                </div>
+                                <div class="body">
+                                    <div class="example-container">
+                                        <mat-form-field appearance="fill" class="example-full-width">
+                                            <mat-label><strong>Username</strong></mat-label>
+                                            <input formControlName="username" matInput value="{{userData.username}}">
+                                        </mat-form-field>
+                                        <mat-form-field appearance="fill" class="example-full-width">
+                                            <mat-label><strong>New Password</strong></mat-label>
+                                            <input matInput type="password">
+                                        </mat-form-field>
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-12">
+                                                <mat-form-field appearance="fill" class="example-full-width">
+                                                    <mat-label><strong>Fisrt Name</strong></mat-label>
+                                                    <input formControlName="first_name" matInput
+                                                           value="{{userData.first_name}}">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <mat-form-field appearance="fill" class="example-full-width">
+                                                    <mat-label><strong>Last Name</strong></mat-label>
+                                                    <input formControlName="last_name" matInput
+                                                           value="{{userData.last_name}}">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-12">
+                                                <mat-form-field appearance="fill" class="example-full-width">
+                                                    <mat-label><strong>Email</strong></mat-label>
+                                                    <input formControlName="email" matInput value="{{userData.email}}">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <mat-form-field appearance="fill" class="example-full-width">
+                                                    <mat-label><strong>Gender: </strong>{{userData.gender}}</mat-label>
+                                                    <mat-select formControlName="gender">
+                                                        <mat-option [value]="'Male'">
+                                                            Male
+                                                        </mat-option>
+                                                        <mat-option [value]="'Female'">
+                                                            Female
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <mat-form-field appearance="fill" class="example-full-width">
+                                                    <mat-label><strong>Address</strong></mat-label>
+                                                    <textarea formControlName="address" matInput
+                                                              value="{{userData.address}}"></textarea>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <mat-form-field appearance="fill" class="example-full-width">
+                                                    <mat-label><strong>Employee description: </strong></mat-label>
+                                                    <textarea formControlName="own_description"
+                                                              matInput value="{{userData.own_description}}"></textarea>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <mat-form-field appearance="fill" class="example-full-width">
+                                                    <mat-label><strong>Experience: </strong></mat-label>
+                                                    <textarea formControlName="experience"
+                                                              matInput value="{{userData.experience}}"></textarea>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button [disabled]="!userUpdateForm.valid " class="btn-space"
+                                                    color="primary"
+                                                    mat-raised-button>Save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <form (ngSubmit)="onSubmitPassword()" [formGroup]="changePasswordForm" class="m-4">
+                                <div class="header">
+                                    <h2>
+                                        <strong>Password Change</strong>
+                                    </h2>
+                                </div>
+                                <div class="body">
+                                    <div class="example-container">
+                                        <mat-form-field appearance="fill" class="example-full-width">
+                                            <mat-label><strong>New Password</strong></mat-label>
+                                            <input [type]="hide ? 'password' : 'text'" formControlName="new_password"
+                                                   matInput type="password">
+                                            <a (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                                               [attr.aria-pressed]="hide" class="show-pwd-icon"
+                                               href="#"
+                                               matSuffix onClick="return false;">
+                                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                            </a>
+                                        </mat-form-field>
+                                        <div class="col-md-12">
+                                            <button [disabled]="!changePasswordForm.valid" class="btn-space"
+                                                    color="primary"
+                                                    mat-raised-button>Change password
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,95 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <!-- breadcrumb -->
+      <app-breadcrumb [active_item]="'Profile'" [items]="['Admin']" [title]="'Profile'">
+      </app-breadcrumb>
+    </div>
+    <!-- Your content goes here  -->
+    <div class="row clearfix">
+      <div class="col-lg-4 col-md-12">
+        <div class="card">
+          <div class="m-b-20">
+            <div class="contact-grid">
+              <div class="profile-header bg-dark">
+                <div class="user-name">{{ user['first_name'] }} {{ user['last_name'] }}</div>
+                <div class="name-center">{{ user['role'] }}</div>
+              </div>
+              <img alt="" class="user-img" src="assets/images/user/usrbig3.jpg">
+              <div class="text-white">
+                <p>
+                  {{ user['address'] }}
+                </p>
+                <div>
+                  <span class="phone">
+                    <i class="material-icons">phone</i>{{ user['phone_number'] }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8 col-md-12">
+        <div class="card">
+          <div class="header">
+            <h2>
+              <strong>Security</strong> Settings
+            </h2>
+          </div>
+          <div class="body">
+            <form (ngSubmit)="onSubmit()" [formGroup]="userEditForm" class="m-4">
+              <div class="example-container">
+
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>First Name</mat-label>
+                  <input formControlName="first_name" matInput type="text">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Last Name</mat-label>
+                  <input formControlName="last_name" matInput type="text">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Username</mat-label>
+                  <input formControlName="username" matInput type="text">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Email</mat-label>
+                  <input formControlName="email" matInput type="email">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Phone</mat-label>
+                  <input formControlName="phone_number" matInput type="test">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>New Password</mat-label>
+                  <input formControlName="password" matInput type="password">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Address</mat-label>
+                  <input formControlName="address" matInput type="test">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Role</mat-label>
+                  <mat-select formControlName="role">
+                    <mat-option *ngFor="let value of roles" [value]=value>
+                      {{ value }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+              </div>
+              <button color="primary" mat-raised-button>Save</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

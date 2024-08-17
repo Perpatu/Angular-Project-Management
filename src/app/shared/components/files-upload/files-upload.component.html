@@ -1,0 +1,29 @@
+<label>Choose Files (.pdf, .dxf, .xlsx, .xls, .txt, .png, .jpg, .jpeg, .rar, .zip, .doc,
+  .docx)</label>
+
+<table *ngIf="destiny === 'Production'" [dataSource]="dataSource" mat-table matSort>
+
+  <ng-container matColumnDef="name">
+    <th *matHeaderCellDef class="appearance" mat-header-cell>
+      Name
+    </th>
+    <td *matCellDef="let element" data-label="Name" mat-cell>
+      {{ element.name }}
+    </td>
+  </ng-container>
+
+  <tr *matHeaderRowDef="columns; sticky: true" mat-header-row>
+  </tr>
+  <tr *matRowDef="let row; columns: columns;" mat-row></tr>
+</table>
+
+<div class="form-group">
+  <form (submit)="uploadFiles()" enctype="multipart/form-data">
+    <input (change)="onFilesSelected($event)" class="form-control" multiple name="files" type="file"/>
+    <button color="primary" mat-raised-button style="margin-top: 25px; margin-bottom: 1em; float: right;"
+            type="submit">
+      Upload Files
+      <div *ngIf="upload" class="spinner-border spinner-border-sm" role="status"></div>
+    </button>
+  </form>
+</div>

@@ -1,0 +1,20 @@
+<form (ngSubmit)="addComment()" [formGroup]="commentForm" class="m-4" form>
+  <div class="row">
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+      <mat-form-field appearance="outline" class="example-full-width">
+        <mat-label>Text</mat-label>
+        <input formControlName="text" matInput placeholder="Text" required>
+        <mat-error *ngIf="commentForm.get('text').hasError('required')">
+          Text is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+      <button [disabled]="!commentForm.valid" class="btn-space" color="primary" mat-raised-button>Add
+        Comment
+      </button>
+    </div>
+  </div>
+</form>

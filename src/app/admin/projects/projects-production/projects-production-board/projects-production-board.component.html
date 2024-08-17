@@ -1,0 +1,213 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <!-- breadcrumb -->
+      <app-breadcrumb [active_item]="'Projects board'" [items]="['Projects']"
+                      [title]="'Projects board'"></app-breadcrumb>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <div class="body">
+            <div class="wrapper">
+              <nav class="nav-main">
+
+                <div class="d-flex float-start">
+                  <mat-form-field appearance="fill" class="me-3">
+                    <mat-label>Search Project</mat-label>
+                    <input #searchInput (keyup.enter)="searchProject(searchInput.value)" matInput>
+                    <mat-icon (click)="searchProject(searchInput.value)" [matTooltipPosition]="'above'" class="icons"
+                              matSuffix matTooltip="Search">search
+                    </mat-icon>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="fill">
+                    <mat-select (selectionChange)="paramsStatus()" [(ngModel)]="status">
+                      <mat-option value="Active">Active Projects</mat-option>
+                      <mat-option value="Suspended">Suspended Projects</mat-option>
+                      <mat-option value="Completed">Completed Projects</mat-option>
+                      <mat-option value="My_Active">My Projects</mat-option>
+                      <mat-option value="My_Suspended">My Suspended Projects</mat-option>
+                      <mat-option value="My_Completed">My Completed Projects</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                </div>
+
+                <div class="d-flex float-end">
+                  <button (click)="openAddProject(addProject)" class="me-3" color="primary"
+                          mat-raised-button type="button">Add Project
+                  </button>
+                  <!--<button (click)="changeTable()" color="primary" mat-raised-button type="button">
+                      Change Table View
+                  </button>-->
+                </div>
+              </nav>
+              <main class="main">
+                <div class="example-container mat-elevation-z8">
+                  <table [dataSource]="dataSource" mat-table matSort>
+
+                    <ng-container matColumnDef="number">
+                      <th *matHeaderCellDef class="appearance" mat-header-cell mat-sort-header>
+                        Project Number
+                      </th>
+                      <td *matCellDef="let element" data-label="number" mat-cell>
+                        <a [routerLink]="['/admin/project-production/detail/', element.id]">{{ element.number }}
+                        </a>
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="order_number">
+                      <th *matHeaderCellDef class="appearance" mat-header-cell mat-sort-header>
+                        Order Number
+                      </th>
+                      <td *matCellDef="let element" data-label="order_number" mat-cell>
+                        {{ element.order_number }}
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="name">
+                      <th *matHeaderCellDef class="appearance" mat-header-cell mat-sort-header>
+                        Project Name
+                      </th>
+                      <td *matCellDef="let element" data-label="number" mat-cell>
+                        {{ element.name }}
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="client">
+                      <th *matHeaderCellDef class="appearance" mat-header-cell mat-sort-header>
+                        Client
+                      </th>
+                      <td *matCellDef="let element" data-label="Client" mat-cell>
+                        {{ element.client.name }}
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="start">
+                      <th *matHeaderCellDef class="appearance" mat-header-cell mat-sort-header>
+                        Start
+                      </th>
+                      <td *matCellDef="let element" data-label="start" mat-cell>
+                        {{ element.start }}
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="deadline">
+                      <th *matHeaderCellDef class="appearance" mat-header-cell mat-sort-header>
+                        Deadline
+                      </th>
+                      <td *matCellDef="let element" data-label="deadline" mat-cell>
+                        {{ element.deadline }}
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="priority">
+                      <th *matHeaderCellDef class="appearance" mat-header-cell mat-sort-header>
+                        Priority
+                      </th>
+                      <td *matCellDef="let element" data-label="priority" mat-cell>
+                        {{ element.priority }}
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="progress">
+                      <th *matHeaderCellDef class="appearance" mat-header-cell mat-sort-header>
+                        Progress
+                      </th>
+                      <td *matCellDef="let element" data-label="progress" mat-cell>
+                        {{ element.progress }}%
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                      <th *matHeaderCellDef class="appearance" mat-header-cell mat-sort-header>
+                        status
+                      </th>
+                      <td *matCellDef="let element" data-label="status" mat-cell>
+                        {{ element.status }}
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="manager">
+                      <th *matHeaderCellDef class="appearance" mat-header-cell mat-sort-header>
+                        Manager
+                      </th>
+                      <td *matCellDef="let element" data-label="manager" mat-cell>
+                        {{ element.manager.name }}
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="company">
+                      <th *matHeaderCellDef class="appearance" mat-header-cell mat-sort-header>
+                        Company
+                      </th>
+                      <td *matCellDef="let element" data-label="company" mat-cell>
+                        {{ element.company }}
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="options">
+                      <th *matHeaderCellDef class="appearance" mat-header-cell>
+                        Options
+                      </th>
+                      <td *matCellDef="let element" data-label="options" mat-cell>
+                        <mat-icon (click)="deleteProject(element.id)" [matTooltipPosition]="'above'"
+                                  class="icons"
+                                  matTooltip="Delete Project">delete_forever
+                        </mat-icon>
+
+                        <mat-icon (click)="openEditProject(editProject, element)" [matTooltipPosition]="'above'"
+                                  class="icons" data-placement="top"
+                                  matTooltip="Edit Project">mode_edit
+                        </mat-icon>
+                      </td>
+                    </ng-container>
+
+                    <tr *matHeaderRowDef="columns; sticky: isWideScreen" mat-header-row></tr>
+                    <tr *matRowDef="let row; columns: columns;" mat-row></tr>
+                  </table>
+                </div>
+                <mat-paginator
+                  (page)="onPageChange($event)" [length]="totalItems"
+                  [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" showFirstLastButtons>
+                </mat-paginator>
+              </main>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+  <ng-template #addProject let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{ titleModal }}</h4>
+      <button (click)="modal.dismiss('Cross click')" aria-label="Close" class="close" type="button">
+        <span aria-hidden="true"><i class="material-icons">close</i></span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-project-add [modalRef]="modalRef"></app-project-add>
+    </div>
+  </ng-template>
+</div>
+
+
+<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+  <ng-template #editProject let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{ titleModal }}</h4>
+      <button (click)="modal.dismiss('Cross click')" aria-label="Close" class="close" type="button">
+        <span aria-hidden="true"><i class="material-icons">close</i></span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-project-production-edit [modalRef]="modalRef"
+                                   [projectData]="projectData"></app-project-production-edit>
+    </div>
+  </ng-template>
+</div>

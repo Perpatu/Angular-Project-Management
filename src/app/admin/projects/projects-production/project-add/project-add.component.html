@@ -1,0 +1,106 @@
+<p>Fields with stars("*") are required</p>
+<div class="body">
+  <form (ngSubmit)="addProject()" [formGroup]="projectAddForm" class="m-4" form>
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width">
+          <mat-label>Name</mat-label>
+          <input formControlName="name" matInput required>
+          <mat-error *ngIf="projectAddForm.get('name').hasError('required')">
+            Name is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width">
+          <mat-label>Number</mat-label>
+          <input formControlName="number" matInput required>
+          <mat-error *ngIf="projectAddForm.get('number').hasError('required')">
+            Number is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width">
+          <mat-label>Order number</mat-label>
+          <input formControlName="order_number" matInput>
+        </mat-form-field>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width mb-3">
+          <mat-label>Priority</mat-label>
+          <mat-select formControlName="priority" required size="3">
+            <mat-option *ngFor="let value of priority" [value]="value">
+              {{ value }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="projectAddForm.get('priority').hasError('required')">
+            Priority is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width mb-3">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status" required size="4">
+            <mat-option *ngFor="let value of status" [value]="value">
+              {{ value }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="projectAddForm.get('status').hasError('required')">
+            Priority is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width mb-3">
+          <mat-label>Client</mat-label>
+          <mat-select formControlName="client" required size="6">
+            <mat-option *ngFor="let client of clients" value="{{client.id}}">
+              {{ client.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="projectAddForm.get('client').hasError('required')">
+            Client is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width mb-3">
+          <mat-label>Project start date</mat-label>
+          <input [matDatepicker]="pickerStart" datePickerFormat="YYYY-MM-DD" formControlName="start" matInput required>
+          <mat-datepicker-toggle [for]="pickerStart" matSuffix></mat-datepicker-toggle>
+          <mat-datepicker #pickerStart></mat-datepicker>
+          <mat-error *ngIf="projectAddForm.get('start').hasError('required')">
+            Project start date is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+        <mat-form-field appearance="outline" class="example-full-width mb-3">
+          <mat-label>Deadline</mat-label>
+          <input [matDatepicker]="pickerEnd" datePickerFormat="YYYY-MM-DD" formControlName="deadline" matInput required>
+          <mat-datepicker-toggle [for]="pickerEnd" matSuffix></mat-datepicker-toggle>
+          <mat-datepicker #pickerEnd></mat-datepicker>
+          <mat-error *ngIf="projectAddForm.get('deadline').hasError('required')">
+            Deadline is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+        <button [disabled]="!projectAddForm.valid" class="btn-space" color="primary" mat-raised-button>Add
+          project
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

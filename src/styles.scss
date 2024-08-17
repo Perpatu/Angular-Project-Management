@@ -1,0 +1,31 @@
+/* You can add global styles to this file, and also import other style files */
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+    z-index: 10000 !important;
+}
+
+.checkbox-start{
+    --mdc-checkbox-selected-focus-icon-color: #006EFF;
+    --mdc-checkbox-selected-hover-icon-color: #006EFF;
+    --mdc-checkbox-selected-icon-color: #006EFF;
+    --mdc-checkbox-selected-pressed-icon-color: #006EFF;
+    --mdc-checkbox-selected-focus-state-layer-color: #006EFF;
+    --mdc-checkbox-selected-hover-state-layer-color: #006EFF;
+}
+
+.checkbox-paused{
+    --mdc-checkbox-selected-focus-icon-color: #FF0000;
+    --mdc-checkbox-selected-hover-icon-color: #FF0000;
+    --mdc-checkbox-selected-icon-color: #FF0000;
+    --mdc-checkbox-selected-pressed-icon-color: #FF0000;
+    --mdc-checkbox-selected-focus-state-layer-color: #FF0000;
+    --mdc-checkbox-selected-hover-state-layer-color: #FF0000;
+}
+
+.checkbox-completed{
+    --mdc-checkbox-selected-focus-icon-color: #00c200;
+    --mdc-checkbox-selected-hover-icon-color: #00c200;
+    --mdc-checkbox-selected-icon-color: #00c200;
+    --mdc-checkbox-selected-pressed-icon-color: #00c200;
+    --mdc-checkbox-selected-focus-state-layer-color: #00c200;
+    --mdc-checkbox-selected-hover-state-layer-color: #00c200;
+}

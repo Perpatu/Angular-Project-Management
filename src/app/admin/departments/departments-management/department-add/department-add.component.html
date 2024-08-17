@@ -1,0 +1,28 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="departmentAddForm" class="m-4">
+  <div class="row">
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+      <mat-form-field appearance="outline" class="example-full-width mb-3">
+        <mat-label>Department name</mat-label>
+        <input formControlName="name" matInput required>
+        <mat-error *ngIf="departmentAddForm.get('name').hasError('required')">
+          Department name is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+      <mat-form-field appearance="outline" class="example-full-width mb-3">
+        <mat-label>Department order</mat-label>
+        <input formControlName="order" matInput required type="number">
+        <mat-error *ngIf="departmentAddForm.get('order').hasError('required')">
+          Department order is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+        <button [disabled]="!departmentAddForm.valid " class="btn-space" color="primary" mat-raised-button>Add
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

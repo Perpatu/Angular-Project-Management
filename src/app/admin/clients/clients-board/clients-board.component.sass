@@ -1,0 +1,117 @@
+td, th
+  text-align: center
+  justify-content: center
+  border: rgba(55, 55, 55) 1px solid
+
+th.appearance
+  background-color: #2A3040
+
+::ng-deep .mat-sort-header-container
+  text-align: center
+  justify-content: center
+
+.mat-column-name
+  text-align: left
+
+.mat-column-color
+  text-align: right
+
+.color-square
+  width: 20px
+  height: 20px
+  border-radius: 50%
+
+.icons
+  cursor: pointer
+
+::-webkit-scrollbar
+  width: 10px
+
+::-webkit-scrollbar-track
+  background: #f1f1f1
+
+::-webkit-scrollbar-thumb
+  background: #888
+
+::-webkit-scrollbar-thumb:hover
+  background: #555
+
+@media (max-height: 960px)
+  .example-container
+    height: 69vh
+    max-height: 100vh
+    overflow: auto
+
+@media (max-height: 750px)
+  .example-container
+    height: 60vh
+    max-height: 100vh
+    overflow: auto
+
+@media (max-height: 700px)
+  .example-container
+    height: 55vh
+    max-height: 100vh
+    overflow: auto
+
+@media (max-height: 600px)
+  .example-container
+    height: 53vh
+    max-height: 100vh
+    overflow: auto
+
+@media (max-height: 540px)
+  .example-container
+    height: 50vh
+    max-height: 100vh
+    overflow: auto
+
+@media (max-height: 510px)
+  .example-container
+    height: 48vh
+    max-height: 100vh
+    overflow: auto
+
+@media (max-width: 960px)
+  td, th
+    border: 0
+
+  table
+    border: 0
+    vertical-align: middle
+
+  table caption
+    font-size: 1em
+
+  table th
+    border: 10px solid
+    clip: rect(0 0 0 0)
+    height: 1px
+    margin: -1px
+    padding: 0
+    position: absolute
+    width: 1px
+
+  table td
+    border-bottom: 1px solid #ddd
+    display: block
+    font-size: 1em
+    text-align: right
+    height: 3em
+    margin-bottom: 4%
+
+  table td:before
+    content: attr(data-label)
+    float: left
+    text-transform: uppercase
+    font-weight: bold
+    font-size: .85em
+
+  table td:last-child
+    border-bottom: 0
+    margin-bottom: 4%
+    height: 10%
+
+    table td:first-child
+      margin-top: 4%
+
