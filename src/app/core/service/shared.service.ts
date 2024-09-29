@@ -215,6 +215,15 @@ export class SharedService {
     return this.http.get(this.APIUrlFileProduction + 'admin/department/?' + params.toString(), this.authHeaders());
   }
 
+  getTaskDepartmentAuth(depId: any, status: any, pageSize: any, pageNumber: any) {
+    const params = new URLSearchParams();
+    params.set('dep_id', depId);
+    params.set('status', status);
+    params.set('page_size', pageSize);
+    params.set('page_number', pageNumber);
+    return this.http.get(this.APIUrlFileProduction + 'auth/department/?' + params.toString(), this.authHeaders());
+  }
+
   searchProductionFiles(depId: any, status: string, query: string) {
     const params = new URLSearchParams();
     params.set('dep_id', depId);

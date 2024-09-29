@@ -42,7 +42,7 @@ export class DepartmentsManagementComponent implements OnInit {
   }
 
   loadData() {
-    this.service.getAuthDepartmentList().subscribe((data: any) => {
+    this.service.getAdminDepartmentList().subscribe((data: any) => {
       this.departments = data;
       this.dataSource = new MatTableDataSource(this.departments);
     });

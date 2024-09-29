@@ -79,7 +79,7 @@ export class DepartmentDetailComponent implements OnInit {
           this.deleteFileComments(commentFile);
         } else if (messageObject.message.type === 'file_delete') {
           const file = messageObject.message.file;
-          //this.refreshFiles(file);
+          this.deleteFiles(file);
         }
       },
       error: (err) => {
@@ -119,6 +119,13 @@ export class DepartmentDetailComponent implements OnInit {
     const fileIndex = this.tasks.findIndex((obj: any) => obj.file.id === comment.file);
     const filteredComments = this.tasks[fileIndex].file.comments.filter((com: any) => com.id !== comment.id);
     this.tasks[fileIndex].file.comments = filteredComments;
+  }
+
+  deleteFiles(file: any) {
+    const fileProductionIndex = this.tasks.findIndex((obj: any) => obj.fileid === file.id);
+    this.tasks.splice(fileProductionIndex, 1);
+    this.dataSource = new MatTableDataSource(this.tasks);
+    this.dataSource.sort = this.sort;
   }
 
 

@@ -2,7 +2,7 @@
   <div class="content-block">
     <div class="block-header">
       <app-breadcrumb [active_item]="'Detail Department'" [items]="['Departments']"
-        [title]="'Detail Department'"></app-breadcrumb>
+                      [title]="'Detail Department'"></app-breadcrumb>
     </div>
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -10,106 +10,110 @@
           <div class="body">
             <div class="wrapper">
               <nav class="nav-main">
-                <h3>{{depName}}</h3>
+                <h3>{{ depName }}</h3>
                 <div class="d-flex float-start">
                   <mat-form-field appearance="fill">
                     <mat-label>Search File</mat-label>
-                    <input #searchInput matInput (keyup.enter)="searchFileDep(searchInput.value)">
-                    <mat-icon matSuffix (click)="searchFileDep(searchInput.value)" class="icons" matTooltip="Search"
-                      [matTooltipPosition]="'above'">search
+                    <input #searchInput (keyup.enter)="searchFileDep(searchInput.value)" matInput>
+                    <mat-icon (click)="searchFileDep(searchInput.value)" [matTooltipPosition]="'above'" class="icons" matSuffix
+                              matTooltip="Search">search
                     </mat-icon>
                   </mat-form-field>
                 </div>
                 <div class="d-flex float-end">
-                  <button mat-raised-button color="primary" (click)="changeStatus()">{{status}}</button>
+                  <button (click)="changeStatus()" color="primary" mat-raised-button>{{ status }}</button>
                 </div>
               </nav>
 
               <main class="main">
                 <div class="example-container mat-elevation-z8">
-                  <table mat-table [dataSource]="dataSource" matSort>
+                  <table [dataSource]="dataSource" mat-table matSort>
 
                     <ng-container matColumnDef="view">
-                      <th mat-header-cell class="appearance" *matHeaderCellDef>
+                      <th *matHeaderCellDef class="appearance" mat-header-cell mat-sort-header>
                         View
                       </th>
-                      <td mat-cell *matCellDef="let element" data-label="view">
+                      <td *matCellDef="let element" data-label="view" mat-cell>
                         <ng-container
-                          *ngIf="element.name.split('.')[element.name.split('.').length -1].toLowerCase() === 'pdf'">
-                          <i (click)="openPdfFile(pdfFile, element.file)" class="material-icons view"
-                            matTooltip="Open PDF viewer" [matTooltipPosition]="'above'">visibility</i>
+                          *ngIf="element.file.name.split('.')[element.file.name.split('.').length -1].toLowerCase() === 'pdf'">
+                          <i (click)="openPdfFile(pdfFile, element.file.file)" [matTooltipPosition]="'above'"
+                             class="material-icons view" matTooltip="Open PDF viewer">visibility</i>
                         </ng-container>
                       </td>
                     </ng-container>
 
                     <ng-container matColumnDef="name">
-                      <th mat-header-cell class="appearance" *matHeaderCellDef mat-sort-header>
+                      <th *matHeaderCellDef class="appearance" mat-header-cell mat-sort-header>
                         Name
                       </th>
-                      <td mat-cell *matCellDef="let element" data-label="Name">
-                        <a target="_blank" href="http://localhost:8000{{element.file}}" download>
-                          {{element.name}}
+                      <td *matCellDef="let element" data-label="Name" mat-cell>
+                        <a download href="http://localhost:8000{{element.file.file}}" target="_blank">
+                          {{ element.file.name }}
                         </a>
                       </td>
                     </ng-container>
 
+
                     <ng-container matColumnDef="prev_task">
-                      <th mat-header-cell class="appearance" *matHeaderCellDef>
-                        Prev task
+                      <th *matHeaderCellDef class="appearance" mat-header-cell>
+                        Previous Task
                       </th>
-                      <td mat-cell *matCellDef="let element" data-label="prev_task">
-                        <ng-container *ngIf="element.queue[0].prev_task === 'lack'">
+                      <td *matCellDef="let element" data-label="prev_task" mat-cell>
+                        <ng-container *ngIf="element.previous_task === null">
                           None
                         </ng-container>
-                        <ng-container *ngIf="element.queue[0].prev_task != 'lack'">
+                        <ng-container *ngIf="element.previous_task != null">
                           <ng-container
-                            *ngIf="element.queue[0].prev_task.start === false && element.queue[0].prev_task.end === false">
+                            *ngIf="element.previous_task.start === false">
                             <p>
-                              Status: Jescze nie rozpoczęto
+                              Status: Not started yet
                             </p>
                           </ng-container>
                           <ng-container
-                            *ngIf="element.queue[0].prev_task.start === true && element.queue[0].prev_task.end === false">
+                            *ngIf="element.previous_task.start === true && element.previous_task.end === false">
                             <p>
-                              Status: Rozpoczęto <br>
-                              Data: <br> {{element.queue[0].prev_task.real_start_date}}
+                              Status: Started
+                              <br>
+                              Data: {{ element.previous_task.real_start_date.split("T")[0]}} {{element.previous_task.real_start_date.split("T")[1].split(".")[0] }}
                             </p>
                           </ng-container>
                           <ng-container
-                            *ngIf="element.queue[0].prev_task.start === true && element.queue[0].prev_task.end === true">
+                            *ngIf="element.previous_task.start === true && element.previous_task.end === true">
                             <p>
-                              Status: Zakończono <br>
-                              Data: <br> {{element.queue[0].prev_task.real_end_date}}
+                              Status: Finished
+                              <br>
+                              Date: {{ element.previous_task.real_end_date.split("T")[0]  }} {{ element.previous_task.real_end_date.split("T")[1].split(".")[0]  }}
                             </p>
                           </ng-container>
                           <ng-container
-                            *ngIf="element.queue[0].prev_task.start === true && element.queue[0].prev_task.paused === true">
+                            *ngIf="element.previous_task.start === true && element.previous_task.paused === true">
                             <p>
-                              Status: Wstrzymano <br>
-                              Data: <br> {{element.queue[0].prev_task.paused_date}}
+                              Status: Paused
+                              <br>
+                              Date: {{ element.previous_task.paused_date.split("T")[0]  }} {{ element.previous_task.paused_date.split("T")[1].split(".")[0] }}
                             </p>
                           </ng-container>
                           <p>
-                            Dep: {{element.queue[0].prev_task.department}}
+                            Dep: {{ element.previous_task.department.name }}
                           </p>
                           person/s responsible for the task: <br>
-                          <ng-container *ngFor="let user of element.queue[0].prev_task.users">
-                            - {{user.first_name}} {{user.last_name}} <br>
+                          <ng-container *ngFor="let user of element.previous_task.users">
+                            <p>
+                              {{ user.first_name }} {{ user.last_name }}
+                            </p>
                           </ng-container>
                         </ng-container>
                       </td>
                     </ng-container>
 
+
                     <ng-container matColumnDef="task">
-                      <th mat-header-cell class="appearance" *matHeaderCellDef>
+                      <th *matHeaderCellDef class="appearance" mat-header-cell>
                         Task
                       </th>
-                      <td mat-cell *matCellDef="let element" data-label="task">
-                        <ng-container *ngIf="element.queue[0].test">
-                          Create only 1 piece and give to Constructor
-                        </ng-container>
+                      <td *matCellDef="let element" data-label="task" mat-cell>
 
-                        <ng-container *ngIf="!element.queue[0].permission">
+                        <ng-container *ngIf="!element.permission">
                           <span class="horizontal">
                             <ul>
                               <li>
@@ -121,53 +125,53 @@
                           </span>
                         </ng-container>
                         <ng-container
-                          *ngIf="element.queue[0].permission && !element.queue[0].paused && !element.queue[0].end">
+                          *ngIf="element.permission && !element.paused && !element.end">
                           <span class="horizontal">
                             <ul>
                               <li>
-                                <mat-checkbox [(ngModel)]="element.queue[0].start"
-                                  (change)="updateQueue(element.queue[0], 'start', element.queue[0].start)"
-                                  class="checkbox-start">
+                                <mat-checkbox (change)="updateTask(element, 'start', element.start)"
+                                              [(ngModel)]="element.start"
+                                              class="checkbox-start">
                                   Start
                                 </mat-checkbox>
                               </li>
-                              <li *ngIf="element.queue[0].start">
-                                <mat-checkbox [(ngModel)]="element.queue[0].paused"
-                                  (change)="updateQueue(element.queue[0], 'paused', element.queue[0].paused)"
-                                  class="checkbox-paused">
+                              <li *ngIf="element.start">
+                                <mat-checkbox (change)="updateTask(element, 'paused', element.paused)"
+                                              [(ngModel)]="element.paused"
+                                              class="checkbox-paused">
                                   Pause
                                 </mat-checkbox>
                               </li>
-                              <li *ngIf="element.queue[0].start">
-                                <mat-checkbox [(ngModel)]="element.queue[0].end"
-                                  (change)="updateQueue(element.queue[0], 'end', element.queue[0].end)"
-                                  class="checkbox-end">
+                              <li *ngIf="element.start">
+                                <mat-checkbox (change)="updateTask(element, 'end', element.end)"
+                                              [(ngModel)]="element.end"
+                                              class="checkbox-end">
                                   End
                                 </mat-checkbox>
                               </li>
                             </ul>
                           </span>
                         </ng-container>
-                        <ng-container *ngIf="element.queue[0].end">
+                        <ng-container *ngIf="element.end">
                           <span class="horizontal">
                             <ul>
                               <li>
-                                <mat-checkbox [(ngModel)]="element.queue[0].end"
-                                  (change)="updateQueue(element.queue[0], 'end', element.queue[0].end)"
-                                  class="checkbox-completed">
+                                <mat-checkbox (change)="updateTask(element, 'end', element.end)"
+                                              [(ngModel)]="element.end"
+                                              class="checkbox-completed">
                                   Completed
                                 </mat-checkbox>
                               </li>
                             </ul>
                           </span>
                         </ng-container>
-                        <ng-container *ngIf="element.queue[0].paused">
+                        <ng-container *ngIf="element.paused">
                           <span class="horizontal">
                             <ul>
                               <li>
-                                <mat-checkbox [(ngModel)]="element.queue[0].paused"
-                                  (change)="updateQueue(element.queue[0], 'paused', element.queue[0].paused)"
-                                  class="checkbox-paused">
+                                <mat-checkbox (change)="updateTask(element, 'paused', element.paused)"
+                                              [(ngModel)]="element.paused"
+                                              class="checkbox-paused">
                                   Paused
                                 </mat-checkbox>
                               </li>
@@ -178,18 +182,20 @@
                     </ng-container>
 
                     <ng-container matColumnDef="next_task">
-                      <th mat-header-cell class="appearance" *matHeaderCellDef>
+                      <th *matHeaderCellDef class="appearance" mat-header-cell>
                         Next task
                       </th>
-                      <td mat-cell *matCellDef="let element" data-label="next_task">
-                        <ng-container *ngIf="element.queue[0].next_task === 'lack'">
+                      <td *matCellDef="let element" data-label="next_task" mat-cell>
+                        <ng-container *ngIf="element.next_task === null">
                           None
                         </ng-container>
-                        <ng-container *ngIf="element.queue[0].next_task != 'lack'">
-                          <p>Dep: {{element.queue[0].next_task.department}}</p>
+                        <ng-container *ngIf="element.next_task != null">
+                          <p>Dep: {{ element.next_task.department.name }}</p>
                           Who to pass on to: <br>
-                          <ng-container *ngFor="let user of element.queue[0].next_task.users">
-                            - {{user.first_name}} {{user.last_name}} <br>
+                          <ng-container *ngFor="let user of element.next_task.users">
+                            <p>
+                              - {{ user.first_name }} {{ user.last_name }}
+                            </p>
                           </ng-container>
                         </ng-container>
                       </td>
@@ -197,54 +203,52 @@
 
 
                     <ng-container matColumnDef="manager">
-                      <th mat-header-cell class="appearance" *matHeaderCellDef>
+                      <th *matHeaderCellDef class="appearance" mat-header-cell>
                         Manager
                       </th>
-                      <td mat-cell *matCellDef="let element" data-label="manager">
-                        {{element.project.manager}}
+                      <td *matCellDef="let element" data-label="manager" mat-cell>
+                        {{ element.manager.first_name }} {{ element.manager.last_name }}
                       </td>
                     </ng-container>
 
-
                     <ng-container matColumnDef="comments">
-                      <th mat-header-cell class="appearance" *matHeaderCellDef>
+                      <th *matHeaderCellDef class="appearance" mat-header-cell>
                         Comments
                       </th>
-                      <td mat-cell *matCellDef="let element" data-label="comments">
+                      <td *matCellDef="let element" data-label="comments" mat-cell>
                         <br>
                         <div class="main-div-comments">
                           <ng-scrollbar autoHeightDisabled="false">
                             <div class="comments-container">
-                              <ng-container *ngFor="let com of element.comments" class="mt-2">
+                              <ng-container *ngFor="let com of element.file.comments" class="mt-2">
                                 <div class="comment">
-                                  <mat-icon *ngIf="com.user.id === user.id"
-                                    (click)="deleteComment(com, element.id, element.expand)" class="delete"
-                                    matTooltip="Delete comment" [matTooltipPosition]="'above'">clear
+                                  <mat-icon (click)="deleteComment(com.id)" [matTooltipPosition]="'above'" class="delete"
+                                            matTooltip="Delete comment">clear
                                   </mat-icon>
-                                  <b>{{com.user.name}}</b>:{{com.text}}
+                                  <b>{{ com.user.name }}</b>:{{ com.text }}
                                 </div>
                               </ng-container>
                             </div>
                           </ng-scrollbar>
                           <div class="float-start">
-                            <mat-icon *ngIf="!element.expand" (click)="expandCommentForm(element)"
-                              class="icons mt-4 mb-2" matTooltip="Show comments" [matTooltipPosition]="'above'">chat
+                            <mat-icon (click)="expandCommentForm(element)" *ngIf="!element.expand"
+                                      [matTooltipPosition]="'above'" class="icons mt-4 mb-2" matTooltip="Show comments">
+                              chat
                             </mat-icon>
 
-                            <mat-icon *ngIf="element.expand" (click)="expandCommentForm(element)"
-                              class="icons mt-4 mb-2" matTooltip="Hide comments"
-                              [matTooltipPosition]="'above'">comments_disabled
+                            <mat-icon (click)="expandCommentForm(element)" *ngIf="element.expand"
+                                      [matTooltipPosition]="'above'" class="icons mt-4 mb-2"
+                                      matTooltip="Hide comments">comments_disabled
                             </mat-icon>
                           </div>
 
-                          <form (ngSubmit)="addComment(element.id, element.expand)" [formGroup]="commentForm"
-                            class="mt-3" form>
+                          <form (ngSubmit)="addComment(element.file.id)" [formGroup]="commentForm" class="mt-3" form>
 
                             <mat-form-field *ngIf="element.expand" appearance="outline" class="w-100">
                               <mat-label>Type your comment here...</mat-label>
                               <input formControlName="text" matInput required>
-                              <mat-icon matSuffix (click)="addComment(element.id, element.expand)" class="icons"
-                                matTooltip="Add comment" [matTooltipPosition]="'above'">send
+                              <mat-icon (click)="addComment(element.file.id)" [matTooltipPosition]="'above'" class="icons"
+                                        matSuffix matTooltip="Add comment">send
                               </mat-icon>
                               <mat-error *ngIf="commentForm.get('text').hasError('required')">
                                 Text is required
@@ -254,10 +258,14 @@
                         </div>
                       </td>
                     </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="columns; sticky: isWideScreen"></tr>
-                    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                    <tr *matHeaderRowDef="columns; sticky: isWideScreen" mat-header-row></tr>
+                    <tr *matRowDef="let row; columns: columns;" mat-row></tr>
                   </table>
                 </div>
+                <mat-paginator
+                  (page)="onPageChange($event)" [length]="totalItems"
+                  [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" showFirstLastButtons>
+                </mat-paginator>
               </main>
             </div>
           </div>

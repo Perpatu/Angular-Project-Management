@@ -22,17 +22,9 @@
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
         <mat-form-field appearance="outline" class="example-full-width mb-3">
           <mat-label>Planned start date</mat-label>
-          <input [ngxMatDatetimePicker]="pickerStart" datePickerFormat="YYYY-MM-DD" formControlName="planned_start_date"
-                 matInput placeholder="Choose a date">
-          <ngx-mat-datepicker-toggle [for]="pickerStart" matSuffix></ngx-mat-datepicker-toggle>
-          <ngx-mat-datetime-picker #pickerStart [disableMinute]="false" [enableMeridian]="false" [hideTime]="false"
-                                   [showSeconds]="false" [showSpinners]="true" [stepHour]="1" [stepMinute]="1"
-                                   [stepSecond]="1" [touchUi]="false">
-            <ngx-mat-datepicker-actions>
-              <button mat-button ngxMatDatepickerCancel>Cancel</button>
-              <button color="primary" mat-raised-button ngxMatDatepickerApply>Apply</button>
-            </ngx-mat-datepicker-actions>
-          </ngx-mat-datetime-picker>
+          <input [owlDateTime]="start_date" formControlName="planned_start_date" matInput placeholder="Date Time">
+          <span [owlDateTimeTrigger]="start_date"><i class="fa fa-calendar"></i></span>
+          <owl-date-time #start_date></owl-date-time>
           <mat-error *ngIf="taskAddForm.get('planned_start_date').hasError('required')">
             Planned start date is required
           </mat-error>
@@ -42,17 +34,9 @@
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
         <mat-form-field appearance="outline" class="example-full-width mb-3">
           <mat-label>Planned end date</mat-label>
-          <input [ngxMatDatetimePicker]="pickerEnd" datePickerFormat="YYYY-MM-DD" formControlName="planned_end_date"
-                 matInput placeholder="Choose a date">
-          <ngx-mat-datepicker-toggle [for]="pickerEnd" matSuffix></ngx-mat-datepicker-toggle>
-          <ngx-mat-datetime-picker #pickerEnd [disableMinute]="false" [enableMeridian]="false" [hideTime]="false"
-                                   [showSeconds]="false" [showSpinners]="true" [stepHour]="1" [stepMinute]="1"
-                                   [stepSecond]="1" [touchUi]="false">
-            <ngx-mat-datepicker-actions>
-              <button mat-button ngxMatDatepickerCancel>Cancel</button>
-              <button color="primary" mat-raised-button ngxMatDatepickerApply>Apply</button>
-            </ngx-mat-datepicker-actions>
-          </ngx-mat-datetime-picker>
+          <input [owlDateTime]="end_date" formControlName="planned_end_date" matInput placeholder="Date Time">
+          <span [owlDateTimeTrigger]="end_date"><i class="fa fa-calendar"></i></span>
+          <owl-date-time #end_date></owl-date-time>
           <mat-error *ngIf="taskAddForm.get('planned_end_date').hasError('required')">
             Planned end date is required
           </mat-error>

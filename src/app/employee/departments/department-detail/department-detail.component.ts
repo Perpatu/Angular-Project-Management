@@ -19,16 +19,15 @@ export class DepartmentDetailComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator') paginator: MatPaginator;
 
-  user: any = this.auth.currentUserValue;
   commentForm: UntypedFormGroup;
-  columns: string[] = [];
+  columns: string[] = ["view", "name", "prev_task", "task", "next_task", "manager", "comments"];
   depId: any;
   depName: string;
   status: string;
-  files: any = [];
+  tasks: any = [];
   dataSource: any = [];
   pathFile: string;
-  currentPage = 1;
+  pageNumber = 1;
   totalItems: number;
   pageSize = 20;
   pageSizeOptions: number[] = [20, 30, 50, 100];
@@ -51,24 +50,27 @@ export class DepartmentDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.wsConnections()
+    this.wsConnections();
     this.route.queryParams.subscribe((params: any) => {
       this.depId = params.dep_id;
       this.depName = params.dep_name;
       this.status = params.status;
-      this.loadForms();
-      this.loadDepartmentData(this.depId, this.status);
+      this.pageSize = params.page_size;
+      this.pageNumber = params.page_number;
+      this.loadsForms();
+      this.loadDepartmentData(this.depId);
     });
   }
 
   wsConnections(): void {
-    /*this.websocketService.connectFileDepartment().subscribe(
-      message => {
+    this.websocketService.connectFileDepartment().subscribe({
+      next: (message) => {
         const messageObject = JSON.parse(message);
         if (messageObject.message.type === 'task') {
-          //const file = messageObject.message.file;
-          this.loadDepartmentData(this.depId, 'Active')
-          //this.refreshFilesDepartment(file);
+          const newPreviousTaskData = messageObject.message.previous_task;
+          const newCurrentTaskData = messageObject.message.current_task;
+          const newNextTaskData = messageObject.message.next_task;
+          this.refreshFiles(newPreviousTaskData, newCurrentTaskData, newNextTaskData)
         } else if (messageObject.message.type === 'comment_add') {
           const commentFile = messageObject.message.comment;
           this.refreshFileComments(commentFile);
@@ -77,152 +79,149 @@ export class DepartmentDetailComponent implements OnInit {
           this.deleteFileComments(commentFile);
         } else if (messageObject.message.type === 'file_delete') {
           const file = messageObject.message.file;
-          this.refreshFiles(file);
+          this.deleteFiles(file);
         }
       },
-      error => console.error('WebSocket error:', error)
-    );*/
+      error: (err) => {
+        console.error('WebSocket error:', err);
+      }
+    })
   }
 
-  refreshFilesDepartment(file: any) {
+  refreshFiles(newPreviousTaskData: any, newCurrentTaskData: any, newNextTaskData: any) {
     try {
-      const fileIndex = this.files.findIndex((obj: any) => obj.id === file.id);
-      if (file.queue[0].end) {
-        this.files.splice(fileIndex, 1);
-        this.dataSource = new MatTableDataSource(this.files);
-        this.dataSource.sort = this.sort;
+      if (newPreviousTaskData !== null) {
+        const previousTaskIndex = this.tasks.findIndex((obj: any) => obj.id === newPreviousTaskData.id);
+        this.tasks[previousTaskIndex] = newPreviousTaskData;
+        this.dataSource = new MatTableDataSource(this.tasks);
       }
-      else {
-        this.files[fileIndex].queue = file.queue;
-        this.files[fileIndex].dep_id = file.dep_id;
+      if (newNextTaskData !== null) {
+        const nextTaskIndex = this.tasks.findIndex((obj: any) => obj.id === newNextTaskData.id);
+        this.tasks[nextTaskIndex] = newNextTaskData;
+        this.dataSource = new MatTableDataSource(this.tasks);
       }
+      const currentTaskIndex = this.tasks.findIndex((obj: any) => obj.id === newCurrentTaskData.id);
+      this.tasks[currentTaskIndex] = newCurrentTaskData;
+      this.dataSource = new MatTableDataSource(this.tasks);
 
     } catch (error) {
-      this.loadDepartmentData(file.queue[0].department, 'Active');
+      console.error('WebSocket error:', error)
     }
   }
 
+
   refreshFileComments(comment: any) {
-    const fileIndex = this.files.findIndex((obj: any) => obj.id === comment.file.id);
-    this.files[fileIndex].comments.push(comment);
+    const fileIndex = this.tasks.findIndex((obj: any) => obj.file.id === comment.file);
+    this.tasks[fileIndex].file.comments.push(comment);
   }
 
   deleteFileComments(comment: any) {
-    const fileIndex = this.files.findIndex((obj: any) => obj.id === comment.file.id);
-    const filteredComments = this.files[fileIndex].comments.filter((com: any) => com.id !== comment.id);
-    this.files[fileIndex].comments = filteredComments;
+    const fileIndex = this.tasks.findIndex((obj: any) => obj.file.id === comment.file);
+    const filteredComments = this.tasks[fileIndex].file.comments.filter((com: any) => com.id !== comment.id);
+    this.tasks[fileIndex].file.comments = filteredComments;
   }
 
-  refreshFiles(file: any) {
-    const fileIndex = this.files.findIndex((obj: any) => obj.id === file.id);
-    this.files.splice(fileIndex, 1);
-    this.dataSource = new MatTableDataSource(this.files);
+  deleteFiles(file: any) {
+    const fileProductionIndex = this.tasks.findIndex((obj: any) => obj.fileid === file.id);
+    this.tasks.splice(fileProductionIndex, 1);
+    this.dataSource = new MatTableDataSource(this.tasks);
     this.dataSource.sort = this.sort;
   }
 
-  loadForms() {
+  loadsForms() {
     this.commentForm = this.fb.group({
-      user: [Validators.required],
-      file: [Validators.required],
+      user: ['', Validators.required],
+      file: ['', Validators.required],
       text: ['', Validators.required]
     });
   }
 
-  paramsStatus(status: string) {
-    if (status === 'Active') {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {
-          dep_id: this.depId,
-          dep_name: this.depName,
-          status: this.status,
-          page_size: null,
-          page_number: null
-        },
-        queryParamsHandling: 'merge'
-      });
-    } else if (status === 'Completed') {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {
-          dep_id: this.depId,
-          dep_name: this.depName,
-          status: this.status,
-          page_size: this.pageSize,
-          page_number: this.currentPage
-        },
-        queryParamsHandling: 'merge'
-      });
-    }
+  paramsStatus() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        dep_id: this.depId,
+        dep_name: this.depName,
+        status: this.status,
+        page_size: this.pageSize,
+        page_number: this.pageNumber
+      },
+      queryParamsHandling: 'merge'
+    });
   }
 
-  loadDepartmentData(depId: any, status: any) {
-    /*if (this.status === 'Active') {
-      this.service.getProductionFilesDepartmentAuth(depId, status).subscribe((data: any) => {
-        this.files = data;
-        this.dataSource = new MatTableDataSource(this.files);
+  loadDepartmentData(depId: any) {
+    this.service.getTaskDepartmentAuth(depId, this.status, this.pageSize, this.pageNumber).subscribe((data: any) => {
+      this.tasks = data.tasks.data;
+      this.dataSource = new MatTableDataSource(this.tasks);
+      this.totalItems = data.tasks.totalItems;
+      if(this.totalItems > 0){
         this.dataSource.sort = this.sort;
-      })
-    }*/
+      }
+    })
+  }
+
+  onPageChange(event: PageEvent) {
+    const pageSize = event.pageSize;
+    const pageNumber = event.pageIndex + 1;
+    this.service.getTaskDepartmentAuth(this.depId, this.status, pageSize, pageNumber).subscribe((data: any) => {
+      this.tasks = data.data;
+      this.dataSource = new MatTableDataSource(this.tasks);
+      this.dataSource.sort = this.sort;
+      this.totalItems = data.totalItems;
+    })
   }
 
   openPdfFile(content: any, path: any) {
     this.pathFile = 'http://localhost:8000' + path;
-    this.modalService.open(content, { centered: true, size: 'xl' });
+    this.modalService.open(content, {centered: true, size: 'xl'});
   }
 
   expandCommentForm(element: any) {
     element.expand = !element.expand;
   }
 
-  addComment(fileId: any, expand: any) {
-    this.commentForm.value.user = this.auth.currentUserValue.id
+  addComment(fileId: any) {
+    this.commentForm.value.user = this.auth.currentUserValue.id;
     this.commentForm.value.file = fileId;
     this.service.addProductionFileComment(this.commentForm.value).subscribe(() => {
-
-    },
-      (error: any) => {
-      }
-    );
+      this.loadDepartmentData(this.depId);
+    });
   }
 
-  deleteComment(com: any, fileId: any, expand: any) {
-    if (com.user.id === this.auth.currentUserValue.id) {
-      this.service.deleteProductionFileComment(com.id).subscribe(() => {
-
-      });
-    }
+  deleteComment(commentId: any) {
+    this.service.deleteProductionFileComment(commentId).subscribe(() => {
+      this.loadDepartmentData(this.depId);
+    });
   }
 
   searchFileDep(searchValue: string) {
     this.service.searchProductionFiles(this.depId, this.status, searchValue).subscribe((data: any) => {
-      this.files = data.files.map((file: any) => ({
+      this.tasks = data.tasks.map((file: any) => ({
         ...file,
         expand: false
       }));
-      this.dataSource = new MatTableDataSource(this.files);
+      this.dataSource = new MatTableDataSource(this.tasks);
       this.dataSource.sort = this.sort;
     });
   }
 
   changeStatus() {
     this.status = this.status === 'Active' ? 'Completed' : 'Active';
-    this.paramsStatus(this.status);
+    this.paramsStatus();
+    this.loadDepartmentData(this.depId);
   }
 
-
-  updateQueue(queue: any, field: any, status: any) {
+  updateTask(queue: any, field: any, status: any) {
     let currentDate: Date = new Date();
     const update = {
       'project': queue.project
     }
-    if (field === 'start' && status){
+    if (field === 'start' && status) {
       update['real_start_date'] = currentDate;
-    }
-    else if (field === 'paused' && status){
+    } else if (field === 'paused' && status) {
       update['paused_date'] = currentDate;
-    }
-    else if (field === 'end' && status){
+    } else if (field === 'end' && status) {
       update['real_end_date'] = currentDate;
     }
     update[field] = status;

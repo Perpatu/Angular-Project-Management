@@ -68,8 +68,8 @@
               </a>
             </ng-container>
             <ng-container *ngIf="note.project">
-              <a [routerLink]="['/admin/project-production/detail', note.project]">
-                <button mat-menu-item>
+              <!--<a [routerLink]="['/admin/project-production/detail', note.project]">-->
+                <button mat-menu-item (click)="goToProject(note.project)">
                   <span class="table-img msg-user ">
                     <i class="material-icons-two-tone nfc-type-icon">folder</i>
                   </span>
@@ -86,7 +86,7 @@
                       class="delete-noti"></app-feather-icons>
                   </div>
                 </button>
-              </a>
+              <!--</a>-->
             </ng-container>
 
           </ng-container>
@@ -94,32 +94,11 @@
         <li *ngIf="userRole === 'Employee'">
           <ng-container *ngFor="let note of notiData">
             <ng-container *ngIf="note.file">
-              <a [queryParams]="{ dep_name: note.department.name, dep_id: note.department.id, status:'Active'}"
+              <a [queryParams]="{ dep_name: note.department.name, dep_id: note.department.id, status:'Active', page_size: 20, page_number: 1}"
                 [routerLink]="['/employee/department/department-detail']">
                 <button mat-menu-item>
                   <span class="table-img msg-user ">
                     <i class="material-icons-two-tone nfc-type-icon">description</i>
-                  </span>
-                  <span class="menu-info">
-                    <ng-container>
-                      <span class="menu-title fw-bold">{{note.content}}</span>
-                    </ng-container>
-                    <span class="menu-desc mt-2">
-                      <i class="material-icons">access_time</i> {{note.timestamp}}
-                    </span>
-                  </span>
-                  <div class="nfc-close" (click)="readNotification($event, note.id)">
-                    <app-feather-icons [class]="'user-menu-icons'" [icon]="'trash'"
-                      class="delete-noti"></app-feather-icons>
-                  </div>
-                </button>
-              </a>
-            </ng-container>
-            <ng-container *ngIf="note.project">
-              <a [routerLink]="['/employee/project-production/detail', note.project]">
-                <button mat-menu-item>
-                  <span class="table-img msg-user ">
-                    <i class="material-icons-two-tone nfc-type-icon">folder</i>
                   </span>
                   <span class="menu-info">
                     <ng-container>

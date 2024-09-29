@@ -21,11 +21,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {NgScrollbarModule} from 'ngx-scrollbar';
 import {AddTaskComponent} from './add-task/add-task.component';
-import {
-  NgxMatDatetimePickerModule,
-  NgxMatNativeDateModule,
-  NgxMatTimepickerModule
-} from '@angular-material-components/datetime-picker';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 import {ManageTaskComponent} from './manage-task/manage-task.component';
 
 
@@ -55,9 +51,8 @@ import {ManageTaskComponent} from './manage-task/manage-task.component';
     MatSnackBarModule,
     MatDatepickerModule,
     NgScrollbarModule,
-    NgxMatDatetimePickerModule,
-    NgxMatTimepickerModule,
-    NgxMatNativeDateModule
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule
   ]
 })
 export class ProjectsProductionModule {

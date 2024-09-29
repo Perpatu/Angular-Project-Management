@@ -2,7 +2,7 @@ import {DOCUMENT} from "@angular/common";
 import {AfterViewInit, Component, Inject, OnInit, Renderer2} from "@angular/core";
 import {ConfigService} from "@config";
 import {AuthService} from "@core";
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {UnsubscribeOnDestroyAdapter} from "@shared";
 import {WebSocketService} from "@core/service/web-socket.service";
 import {SharedService} from "@core/service/shared.service";
@@ -34,6 +34,7 @@ export class HeaderComponent
     private configService: ConfigService,
     private authService: AuthService,
     private router: Router,
+    private route: ActivatedRoute,
     private websocketService: WebSocketService,
     private service: SharedService
   ) {
@@ -62,6 +63,11 @@ export class HeaderComponent
     }
   }
 
+  goToProject(projectId:any){
+    this.router.navigateByUrl('/admin/project-production/detail/' + projectId).then(() => {
+      window.location.reload();
+    });
+  }
 
   goToProfile() {
     this.router.navigate(['admin/user/profile-user/', this.userId]);
@@ -72,45 +78,68 @@ export class HeaderComponent
   }
 
   wsConnections(): void {
-    this.websocketService.connectProjectNoti().subscribe(
-      message => {
-        const messageObject = JSON.parse(message);
-        this.notiData.push(messageObject.message.notification);
-        this.loadNotificationsQuantity();
-      },
-      error => console.error('WebSocket error:', error)
-    );
+    if (this.userRole === "Admin") {
+      this.websocketService.connectProjectNoti().subscribe({
+        next: (message) => {
+          const messageObject = JSON.parse(message);
+          this.notiData.push(messageObject.message.notification);
+          this.loadNotificationsQuantity();
+        },
+        error: (err) => {
+          console.error('WebSocket error:', err);
+        }
+      })
+    }
 
-    this.websocketService.connectFileNoti().subscribe(
-      message => {
+    this.websocketService.connectFileNoti().subscribe({
+      next: (message) => {
         const messageObject = JSON.parse(message);
-        console.log(messageObject)
         this.notiData.push(messageObject.message.notification);
         this.loadNotificationsQuantity();
       },
-      error => console.error('WebSocket error:', error)
-    );
+      error: (err) => {
+        console.error('WebSocket error:', err);
+      }
+    })
   }
 
   loadNotifications() {
-    this.service.getTaskNotifications().subscribe((dataFile: any) => {
-      this.service.getProjectNotifications().subscribe((dataProject: any) => {
-        this.notiData = [...dataFile, ...dataProject];
-      })
-    });
+    if (this.userRole === "Admin") {
+      this.service.getTaskNotifications().subscribe((dataFile: any) => {
+        this.service.getProjectNotifications().subscribe((dataProject: any) => {
+          this.notiData = [...dataFile, ...dataProject];
+        })
+      });
+    } else {
+      this.service.getTaskNotifications().subscribe((dataFile: any) => {
+        this.notiData = [...dataFile];
+      });
+    }
   }
 
   loadNotificationsQuantity() {
-    this.service.getTaskNotificationsQuantity().subscribe((dataFile: any) => {
-      this.service.getProjectNotificationsQuantity().subscribe((dataProject: any) => {
-        this.notiQuantity = dataFile + dataProject;
+    if (this.userRole === "Admin") {
+      this.service.getTaskNotificationsQuantity().subscribe((dataFile: any) => {
+        this.service.getProjectNotificationsQuantity().subscribe((dataProject: any) => {
+          this.notiQuantity = dataFile + dataProject;
+          if (this.notiQuantity > 0) {
+            this.notification = true;
+          } else {
+            this.notification = false;
+          }
+        })
+      });
+    } else {
+      this.service.getTaskNotificationsQuantity().subscribe((dataFile: any) => {
+        this.notiQuantity = dataFile;
         if (this.notiQuantity > 0) {
           this.notification = true;
         } else {
           this.notification = false;
         }
-      })
-    });
+      });
+    }
+
   }
 
   readNotification(event: Event, notiId: any) {
@@ -121,7 +150,6 @@ export class HeaderComponent
     }
     const notification = this.notiData.find((noti: any) => noti.id === notiId);
     if (notification.file) {
-      console.log('file')
       this.service.updateTaskNotifications(notiId, value).subscribe(() => {
         this.loadNotifications();
         this.loadNotificationsQuantity();

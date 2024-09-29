@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CalendarOptions, EventChangeArg, EventClickArg,} from '@fullcalendar/core/';
 import {SharedService} from '@core/service/shared.service';
+import {Router} from '@angular/router';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import esLocale from '@fullcalendar/core/locales/pl';
@@ -32,12 +33,13 @@ export class CalendarDashboardComponent implements OnInit {
     themeSystem: 'bootstrap5',
     locale: esLocale,
     eventResizableFromStart: true,
-    //eventClick: this.handleEventClick.bind(this),
+    eventClick: this.handleEventClick.bind(this),
     eventChange: this.handleDateChangeEvent.bind(this)
   };
 
   constructor(
-    private service: SharedService
+    private service: SharedService,
+    private router: Router,
   ) {
   }
 
@@ -46,8 +48,9 @@ export class CalendarDashboardComponent implements OnInit {
   }
 
   loadEvents() {
-    this.service.getProjectsAuthBoard('Active').subscribe((data: any) => {
-      this.projectData = data.map((ev: any) => ({
+    this.service.getProjectsBoard('Active',1000,1).subscribe((data: any) => {
+      console.log(data.data)
+      this.projectData = data.data.map((ev: any) => ({
         title: ev.number + ': ' + ev.client.name,
         project: ev.number,
         start: ev.start,
@@ -62,7 +65,7 @@ export class CalendarDashboardComponent implements OnInit {
 
   handleEventClick(event: EventClickArg) {
     const projectId = event["event"]._def.extendedProps.projectId;
-    window.open('http://localhost:4200/#/admin/project-production/detail/' + projectId);
+    this.router.navigateByUrl('/admin/project-production/detail/' + projectId);
   }
 
   formatDate(inputDate: string) {
